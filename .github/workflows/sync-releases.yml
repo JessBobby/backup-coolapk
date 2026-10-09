@@ -1,21 +1,20 @@
 name: Sync Releases
 
 on:
-  # 允许你手动点击按钮触发一次
   workflow_dispatch:
-  # 定时任务：每12小时自动运行一次
   schedule:
     - cron: '0 19 * * *'
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    # 关键：添加权限声明
+    permissions:
+      contents: write
     steps:
       - name: Clone Releases from Source
         uses: andrewthetechie/gha-clone-releases@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # 源仓库，即你需要备份的项目
           src_repo: daimiaopeng/coolapk-desktop
-          # 重要：设置为 true，否则只会复制 Release 说明，不会下载 .exe 文件
           copy_assets: true
